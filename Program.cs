@@ -11,21 +11,9 @@ namespace GoogleHascode
 		public int id;
 		public int score;
 
-		//ta s větším score je první
 		public int CompareTo(Book other)
 		{
-			if(this.score > other.score)
-			{
-				return -1;
-			}
-			else if (this.score == other.score)
-			{
-				return 0;
-			}
-			else
-			{
-				return 1;
-			}
+            return -1*this.score.CompareTo(other.score);
 		}
 	}
 
@@ -38,6 +26,8 @@ namespace GoogleHascode
         public int scann_time;
 		public int scans_per_day;
 		public float score;
+
+        
 	}
 
 
@@ -92,12 +82,12 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            //StreamReader sr = new StreamReader("a_example.txt");
+            StreamReader sr = new StreamReader("a_example.txt");
             //StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
-            StreamReader sr = new StreamReader("f_libraries_of_the_world.txt");
+            //StreamReader sr = new StreamReader("f_libraries_of_the_world.txt");
 
             //reading first line
             string line = sr.ReadLine();
@@ -169,13 +159,26 @@ namespace GoogleHascode
             int X = 5;
             int Y = 7;
             List<Library> used_libraries = new List<Library>();
-            used_libraries = BackTrack(bag, X, Y, used_libraries);
+         //   used_libraries = BackTrack(bag, X, Y, used_libraries);
 
             //for (; ; );
+            FindBestLibraryScore(libraries[0]);
+
             PrintOutput(libraries);
         }
 
         #region Algorithm
+
+        static void FindBestLibraryScore (Library lib)
+        {
+            lib.books.Sort();
+            int best = 0;
+            
+            for(int i = 0; i < lib.books.Count; i++)
+            {
+            }
+
+        }
 
         static List<Library> BackTrack(Cell[,] bag, int X, int Y, List<Library> used_libraries)
         {
