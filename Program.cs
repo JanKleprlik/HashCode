@@ -141,10 +141,14 @@ namespace GoogleHascode
 
 
 			#region Algorithm
-			long ScoreOpt = (long)max_lib_score;
+			long ScoreOpt = 1000000;
+			long maxScore = (long)max_lib_score;
             long LibCoutOpt = libraries.Count;
 
-            Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
+			ScaleScore(libraries, ScoreOpt / maxScore);
+
+
+			Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
             for (int i = 0; i < ScoreOpt; i++) // Init level 0
                 bag[i, 0] = new Cell(0, 0, 0, false);
@@ -160,7 +164,7 @@ namespace GoogleHascode
 
 			//Get Best Result
 			long best_row = 0;
-            for (long i = 0; i <LibCoutOpt; i++)
+            for (long i = LibCoutOpt-1; i > 0; i--)
 			{
 				if (bag[ScoreOpt-1, i].TotalTime <= number_of_days)
 				{
@@ -175,7 +179,7 @@ namespace GoogleHascode
             int X = (int)ScoreOpt;
             int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-			   used_libraries = BackTrack(bag, X, Y, used_libraries);
+			used_libraries = BackTrack(bag, X, Y, used_libraries);
 			#endregion
 			//for (; ; );
 			FindBestLibraryScore(libraries[0]);
@@ -183,7 +187,15 @@ namespace GoogleHascode
             PrintOutput(used_libraries);
         }
 
-        #region Algorithm
+		#region Algorithm
+
+		public static void ScaleScore(List<Library> libraries, long constant)
+		{
+			foreach (var lib in libraries)
+			{
+				lib.score = lib.score * constant;
+			}
+		}
 
         static void FindBestLibraryScore (Library lib)
         {
