@@ -5,11 +5,12 @@ using System.IO;
 namespace GoogleHascode
 {
 
-	class Book
+	class Book :IComparable
 	{
 		public int id;
 		public int score;
 	}
+
 	class Library
 	{
 		public int id;
