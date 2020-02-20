@@ -1,14 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace GoogleHascode
 {
 
-	class Book :IComparable
+	class Book :IComparable<Book>
 	{
 		public int id;
 		public int score;
+
+		//ta s větším score je první
+		public int CompareTo(Book other)
+		{
+			if(this.score > other.score)
+			{
+				return -1;
+			}
+			else if (this.score == other.score)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 
 	class Library
