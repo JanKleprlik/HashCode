@@ -92,12 +92,12 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            //StreamReader sr = new StreamReader("a_example.txt");
+            StreamReader sr = new StreamReader("a_example.txt");
             //StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
-            StreamReader sr = new StreamReader("f_libraries_of_the_world.txt");
+            ///StreamReader sr = new StreamReader("f_libraries_of_the_world.txt");
 
             //reading first line
             string line = sr.ReadLine();
@@ -197,14 +197,17 @@ namespace GoogleHascode
 
         static void CalculateCell(Cell[,] bag, List<Library> libraries, int X, int Y)
         {
-            // X is Libraries Y is score
-            if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - (int)libraries[X - 1].score].TotalTime)
-            {
+			int indexY = 0;
+			if ((int)libraries[X - 1].score < Y)
+				indexY = Y - (int)libraries[X - 1].score;
+			// X is Libraries Y is score
+			if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - indexY].TotalTime)
+			{
                 bag[X, Y] = new Cell(X - 1, Y, bag[X - 1, Y].TotalTime, false);
             }
             else
             {
-                bag[X, Y] = new Cell(X - 1, Y - (int)libraries[X - 1].score, bag[X - 1, Y].TotalTime, true);
+                bag[X, Y] = new Cell(X - 1, Y - indexY, bag[X - 1, Y - indexY].TotalTime, true);
             }
         }
 
