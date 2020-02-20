@@ -164,7 +164,7 @@ namespace GoogleHascode
 
 			//Get Best Result
 			long best_row = 0;
-            for (long i = 0; i <LibCoutOpt; i++)
+            for (long i = LibCoutOpt-1; i > 0; i--)
 			{
 				if (bag[ScoreOpt-1, i].TotalTime <= number_of_days)
 				{
@@ -179,12 +179,12 @@ namespace GoogleHascode
             int X = (int)ScoreOpt;
             int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-			//   used_libraries = BackTrack(bag, X, Y, used_libraries);
+			used_libraries = BackTrack(bag, X, Y, used_libraries);
 			#endregion
 			//for (; ; );
 			FindBestLibraryScore(libraries[0]);
 
-            PrintOutput(libraries);
+            PrintOutput(used_libraries);
         }
 
 		#region Algorithm
