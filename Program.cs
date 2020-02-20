@@ -143,7 +143,7 @@ namespace GoogleHascode
 			}
 			#endregion
             long ScoreOpt = (long)max_lib_score;
-            long LibCoutOpt = libraries.Capacity;
+            long LibCoutOpt = libraries.Count;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
@@ -210,7 +210,9 @@ namespace GoogleHascode
 
         static void CalculateCell(Cell[,] bag, List<Library> libraries, int X, int Y)
         {
-			int indexY = (int)libraries[X - 1].score;
+			if (Y == 0)
+				Y = 1;
+			int indexY = (int)libraries[Y - 1].score;
 			if (indexY > Y)
 				indexY = 0;
 			// X is Libraries Y is score
