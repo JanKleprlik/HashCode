@@ -157,12 +157,16 @@ namespace GoogleHascode
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
-            for (int i = 0; i < LibCoutOpt; i++) // Init level 0
-                bag[0, i] = new Cell(0, 0, 0, false);
+            for (int i = 0; i < ScoreOpt; i++) // Init level 0
+                bag[i, 0] = new Cell(0, 0, 0, false);
 
-            // Calculate other rows
+			// Calculate other rows
 
-            // Get Best result
+			long best_row = 0;
+            for (long i = 0; i <LibCoutOpt; i++)
+			{
+				//var a = bag[ScoreOpt, i]
+			}
 
             //Backtrack and recieve libraries
 
