@@ -210,14 +210,17 @@ namespace GoogleHascode
 
         static void CalculateCell(Cell[,] bag, List<Library> libraries, int X, int Y)
         {
-            // X is Libraries Y is score
-            if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - (int)libraries[X - 1].score].TotalTime)
+			int indexY = (int)libraries[X - 1].score;
+			if (indexY > Y)
+				indexY = 0;
+			// X is Libraries Y is score
+			if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - indexY].TotalTime)
             {
                 bag[X, Y] = new Cell(X - 1, Y, bag[X - 1, Y].TotalTime, false);
             }
             else
             {
-                bag[X, Y] = new Cell(X - 1, Y - (int)libraries[X - 1].score, bag[X - 1, Y].TotalTime, true);
+                bag[X, Y] = new Cell(X - 1, Y - indexY, bag[X - 1, Y - indexY].TotalTime, true);
             }
         }
 
