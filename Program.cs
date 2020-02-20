@@ -121,10 +121,44 @@ namespace GoogleHascode
 					libraries.Add(lib);
 				}
 			}
-			#endregion
+            #endregion
 
-			//for (; ; );
-			PrintOutput(libraries);
-		}
-	}
+            const int ScoreOpt = 1;
+            const int LibCoutOpt = 1;
+
+            Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
+
+            for (int i = 0; i < LibCoutOpt; i++) // Init level 0
+                bag[0, i] = new Cell(0, 0, 0);
+
+            // Calculate other rows
+
+            // Get Best result
+
+            //Backtrack and recieve libraries
+
+            //for (; ; );
+            PrintOutput(libraries);
+        }
+
+        #region Algorithm
+
+        struct Cell
+        {
+            int PrevCellX { get; }
+
+            int PrevCellY { get; }
+
+            int TotalTime { get; }
+
+            public Cell(int PrevCellX, int PrevCellY, int TotalTime)
+            {
+                this.PrevCellX = PrevCellX;
+                this.PrevCellY = PrevCellY;
+                this.TotalTime = TotalTime;
+            }
+        }
+
+        #endregion
+    }
 }
