@@ -33,7 +33,7 @@ namespace GoogleHascode
 	{
 		public static void PrintOutput(List<Library> chosen_libraries)
 		{
-			using (var sw = new StreamWriter("output.txt"))
+			using (var sw = new StreamWriter("output1.txt"))
 			{
 				sw.WriteLine(chosen_libraries.Count);
 				for (int i = 0; i < chosen_libraries.Count; i++)
@@ -75,8 +75,8 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            StreamReader sr = new StreamReader("a_example.txt");
-            //StreamReader sr = new StreamReader("b_read_on.txt");
+            //StreamReader sr = new StreamReader("a_example.txt");
+            StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
@@ -175,12 +175,12 @@ namespace GoogleHascode
             int X = (int)ScoreOpt;
             int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-			//   used_libraries = BackTrack(bag, X, Y, used_libraries);
+			   used_libraries = BackTrack(bag, X, Y, used_libraries);
 			#endregion
 			//for (; ; );
 			FindBestLibraryScore(libraries[0]);
 
-            PrintOutput(libraries);
+            PrintOutput(used_libraries);
         }
 
         #region Algorithm
