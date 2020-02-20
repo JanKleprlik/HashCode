@@ -153,14 +153,21 @@ namespace GoogleHascode
 			}
 			#endregion
             long ScoreOpt = (long)max_lib_score;
-            long LibCoutOpt = 1;
+            long LibCoutOpt = libraries.Capacity;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
             for (int i = 0; i < LibCoutOpt; i++) // Init level 0
                 bag[0, i] = new Cell(0, 0, 0, false);
 
-            // Calculate other rows
+			// Calculate other rows
+			for (int score = 1; score < ScoreOpt; score++)
+			{
+				for (int lib = 0; lib < LibCoutOpt; lib++)
+				{
+					CalculateCell(bag, libraries, score, lib);
+				}
+			}
 
             // Get Best result
 
