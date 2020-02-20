@@ -31,28 +31,21 @@ namespace GoogleHascode
         public int num_of_books;
         public int num_of_used_books;
         public int scann_time;
-        public int scans_per_day;
-        public float score;
+		public int scans_per_day;
+		public float score;        
+	}
 
 
-    }
-
-
-    class Program
-    {
-        public static void GetBestResult()
-        {
-            //for (int i = )
-        }
-
-        public static void PrintOutput(List<Library> chosen_libraries)
-        {
-            using (var sw = new StreamWriter("output.txt"))
-            {
-                sw.WriteLine(chosen_libraries.Count);
-                for (int i = 0; i < chosen_libraries.Count; i++)
-                {
-                    sw.WriteLine("{0} {1}", chosen_libraries[i].id, chosen_libraries[i].num_of_books);
+	class Program
+	{
+		public static void PrintOutput(List<Library> chosen_libraries)
+		{
+			using (var sw = new StreamWriter("output.txt"))
+			{
+				sw.WriteLine(chosen_libraries.Count);
+				for (int i = 0; i < chosen_libraries.Count; i++)
+				{
+					sw.WriteLine("{0} {1}", chosen_libraries[i].id, chosen_libraries[i].num_of_books);
 
                     int j = 0;
                     for (; j < chosen_libraries[i].num_of_books - 1; j++)
@@ -89,8 +82,8 @@ namespace GoogleHascode
             List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            StreamReader sr = new StreamReader("a_example.txt");
-            //StreamReader sr = new StreamReader("b_read_on.txt");
+            //StreamReader sr = new StreamReader("a_example.txt");
+            StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
@@ -140,19 +133,29 @@ namespace GoogleHascode
                         }
                         lib.score = (score / (float)lib.scann_time);
 
-                        if (lib.score > max_lib_score)
-                        {
-                            max_lib_score = lib.score;
-                        }
-                    }
-                    libraries.Add(lib);
-                }
-            }
-            #endregion
-            long ScoreOpt = (long)max_lib_score;
-            long LibCoutOpt = libraries.Capacity;
+						if (lib.score > max_lib_score)
+						{
+							max_lib_score = lib.score;
+						}
+					}
+					libraries.Add(lib);
+				}
+			}
+			#endregion
 
-            Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
+
+
+
+
+			#region Algorithm
+			long ScoreOpt = 1000000;
+			long maxScore = (long)max_lib_score;
+            long LibCoutOpt = libraries.Count;
+
+			ScaleScore(libraries, ScoreOpt / maxScore);
+
+
+			Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
             for (int i = 0; i < ScoreOpt; i++) // Init level 0
                 bag[i, 0] = new Cell(0, 0, 0, false);
@@ -166,16 +169,16 @@ namespace GoogleHascode
                 }
             }
 
-            //Get Best Result
-            long best_row = 0;
-            /*   for (long i = 0; i <LibCoutOpt; i++)
-               {
-                   if (bag[ScoreOpt, i].TotalTime <= number_of_days)
-                   {
-                       best_row = i;
-                       break;
-                   }
-               }*/
+			//Get Best Result
+			long best_row = 0;
+            for (long i = LibCoutOpt-1; i > 0; i--)
+			{
+				if (bag[ScoreOpt-1, i].TotalTime <= number_of_days)
+				{
+					best_row = i;
+					break;
+				}
+			}
 
             //Backtrack and recieve libraries
             //TODO CHANGE BACKTRACK PARAMETERS!!!!!!
@@ -183,18 +186,25 @@ namespace GoogleHascode
             int X = (int)ScoreOpt;
             int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-            //   used_libraries = BackTrack(bag, X, Y, used_libraries);
+			used_libraries = BackTrack(bag, X, Y, used_libraries);
+			#endregion
+			//for (; ; );
+			FindBestLibraryScore(libraries[0]);
 
-            //for (; ; );
-            //FindBestLibraryScore(libraries[0], books);
-
-            PrintOutput(libraries);
+            PrintOutput(used_libraries);
         }
 
-        #region Algorithm
+		#region Algorithm
 
-        /*
-        static void FindBestLibraryScore(Library lib, List<int> books)
+		public static void ScaleScore(List<Library> libraries, long constant)
+		{
+			foreach (var lib in libraries)
+			{
+				lib.score = lib.score * constant;
+			}
+		}
+
+        static void FindBestLibraryScore (Library lib)
         {
             List<Book> books_in_lib = new List<Book>();
             for (int i = 0; i < lib.books.Count; i++)
@@ -241,14 +251,19 @@ namespace GoogleHascode
 
         static void CalculateCell(Cell[,] bag, List<Library> libraries, int X, int Y)
         {
-            // X is Libraries Y is score
-            if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - (int)libraries[X - 1].score].TotalTime)
+			if (Y == 0)
+				Y = 1;
+			int indexY = (int)libraries[Y - 1].score;
+			if (indexY > Y)
+				indexY = 0;
+			// X is Libraries Y is score
+			if (bag[X - 1, Y].TotalTime < bag[X - 1, Y - indexY].TotalTime)
             {
                 bag[X, Y] = new Cell(X - 1, Y, bag[X - 1, Y].TotalTime, false);
             }
             else
             {
-                bag[X, Y] = new Cell(X - 1, Y - (int)libraries[X - 1].score, bag[X - 1, Y].TotalTime, true);
+                bag[X, Y] = new Cell(X - 1, Y - indexY, bag[X - 1, Y - indexY].TotalTime + (int)libraries[Y - 1].scann_time, true);
             }
         }
 
@@ -270,7 +285,13 @@ namespace GoogleHascode
                 this.TotalTime = TotalTime;
                 IsLibraryUsed = used;
             }
-        }
+
+			public override string ToString()
+			{
+				return $"{TotalTime}";
+			}
+		}
+		
 
         #endregion
     }
