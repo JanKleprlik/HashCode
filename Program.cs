@@ -237,7 +237,7 @@ namespace GoogleHascode
                 }
 
         }
-
+		*/
         static List<Library> BackTrack(Cell[,] bag, int X, int Y, List<Library> used_libraries, List<Library> libraries)
         {
             if (X == 0 || Y == 0)
