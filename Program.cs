@@ -1,15 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace GoogleHascode
 {
 
-	class Book
+	class Book :IComparable<Book>
 	{
 		public int id;
 		public int score;
+
+		//ta s větším score je první
+		public int CompareTo(Book other)
+		{
+			if(this.score > other.score)
+			{
+				return -1;
+			}
+			else if (this.score == other.score)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
+
 	class Library
 	{
 		public int id;
@@ -18,20 +37,25 @@ namespace GoogleHascode
         public int num_of_used_books;
         public int scann_time;
 		public int scans_per_day;
-		public decimal score;
+		public float score;
 	}
 
 
-    class Program
-    {
-        public static void PrintOutput(List<Library> chosen_libraries)
-        {
-            using (var sw = new StreamWriter("output.txt"))
-            {
-                sw.WriteLine(chosen_libraries.Count);
-                for (int i = 0; i < chosen_libraries.Count; i++)
-                {
-                    sw.WriteLine("{0} {1}", chosen_libraries[i].id, chosen_libraries[i].num_of_books);
+	class Program
+	{
+		public static void GetBestResult()
+		{
+			//for (int i = )
+		}
+
+		public static void PrintOutput(List<Library> chosen_libraries)
+		{
+			using (var sw = new StreamWriter("output.txt"))
+			{
+				sw.WriteLine(chosen_libraries.Count);
+				for (int i = 0; i < chosen_libraries.Count; i++)
+				{
+					sw.WriteLine("{0} {1}", chosen_libraries[i].id, chosen_libraries[i].num_of_books);
 
                     int j = 0;
                     for (; j < chosen_libraries[i].num_of_books - 1; j++)
@@ -60,11 +84,12 @@ namespace GoogleHascode
         {
 
 
-            int number_of_books;
-            int number_of_libraries;
-            int number_of_days;
-            List<int> books = new List<int>();
-            List<Library> libraries = new List<Library>();
+			int number_of_books;
+			int number_of_libraries;
+			int number_of_days;
+			float max_lib_score = 0;
+			List<int> books = new List<int>();
+			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
             //StreamReader sr = new StreamReader("a_example.txt");
@@ -107,24 +132,28 @@ namespace GoogleHascode
                     lib.scans_per_day = int.Parse(nums_s[2]);
 
 
-                    if (!(lib.scann_time > number_of_days)) //doba nahrání knihovny je delší jak počet možných dnů
-                    {
-                        //přidám id knížek do knihovny
-                        for (int j = 0; j < lib.num_of_books; j++)
-                        {
-                            int id = ReadInteger(ref sr);
-                            score += books[id];
-                            lib.books.Add(id);
-                        }
-                        lib.score = (score / (decimal)lib.scann_time);
-                    }
-                    libraries.Add(lib);
-                }
-            }
-            #endregion
+					if (!(lib.scann_time > number_of_days)) //doba nahrání knihovny je delší jak počet možných dnů
+					{
+						//přidám id knížek do knihovny
+						for (int j = 0; j < lib.num_of_books; j++)
+						{
+							int id = ReadInteger(ref sr);
+							score += books[id];
+							lib.books.Add(id);
+						}
+						lib.score = (score / (float)lib.scann_time);
 
-            const int ScoreOpt = 1;
-            const int LibCoutOpt = 1;
+						if (lib.score > max_lib_score)
+						{
+							max_lib_score = lib.score;
+						}
+					}
+					libraries.Add(lib);
+				}
+			}
+			#endregion
+            long ScoreOpt = (long)max_lib_score;
+            long LibCoutOpt = 1;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
