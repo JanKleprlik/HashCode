@@ -165,7 +165,7 @@ namespace GoogleHascode
             {
                 for (int lib = 0; lib < LibCoutOpt; lib++)
                 {
-                    //CalculateCell(bag, libraries, score, lib);
+                    CalculateCell(bag, libraries, score, lib);
                 }
             }
 
