@@ -15,9 +15,9 @@ namespace GoogleHascode
 		public int id;
 		public List<int> books = new List<int>();
 		public int num_of_books;
-		public int scann_time;
+        public int num_of_used_books;
+        public int scann_time;
 		public int scans_per_day;
-
 		public decimal score;
 	}
 
@@ -129,7 +129,7 @@ namespace GoogleHascode
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
             for (int i = 0; i < LibCoutOpt; i++) // Init level 0
-                bag[0, i] = new Cell(0, 0, 0);
+                bag[0, i] = new Cell(0, 0, 0, false);
 
             // Calculate other rows
 
@@ -145,17 +145,20 @@ namespace GoogleHascode
 
         struct Cell
         {
+            bool IsLibraryUsed;
+
             int PrevCellX { get; }
 
             int PrevCellY { get; }
 
             int TotalTime { get; }
 
-            public Cell(int PrevCellX, int PrevCellY, int TotalTime)
+            public Cell(int PrevCellX, int PrevCellY, int TotalTime, bool used)
             {
                 this.PrevCellX = PrevCellX;
                 this.PrevCellY = PrevCellY;
                 this.TotalTime = TotalTime;
+                IsLibraryUsed = used;
             }
         }
 
