@@ -236,7 +236,7 @@ namespace GoogleHascode
                     books_removed = best_books_removed;
                 }
 
-        }
+        }*/
 
         static List<Library> BackTrack(Cell[,] bag, int X, int Y, List<Library> used_libraries, List<Library> libraries)
         {
