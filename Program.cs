@@ -33,7 +33,7 @@ namespace GoogleHascode
 	{
 		public static void PrintOutput(List<Library> chosen_libraries)
 		{
-			using (var sw = new StreamWriter("output1.txt"))
+			using (var sw = new StreamWriter("output.txt"))
 			{
 				sw.WriteLine(chosen_libraries.Count);
 				for (int i = 0; i < chosen_libraries.Count; i++)
@@ -75,8 +75,8 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            //StreamReader sr = new StreamReader("a_example.txt");
-            StreamReader sr = new StreamReader("b_read_on.txt");
+            StreamReader sr = new StreamReader("a_example.txt");
+            //StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
