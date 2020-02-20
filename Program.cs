@@ -222,7 +222,7 @@ namespace GoogleHascode
             }
             else
             {
-                bag[X, Y] = new Cell(X - 1, Y - indexY, bag[X - 1, Y - indexY].TotalTime, true);
+                bag[X, Y] = new Cell(X - 1, Y - indexY, bag[X - 1, Y - indexY].TotalTime + (int)libraries[Y - 1].scann_time, true);
             }
         }
 
@@ -244,7 +244,13 @@ namespace GoogleHascode
                 this.TotalTime = TotalTime;
                 IsLibraryUsed = used;
             }
-        }
+
+			public override string ToString()
+			{
+				return $"{TotalTime}";
+			}
+		}
+		
 
         #endregion
     }
