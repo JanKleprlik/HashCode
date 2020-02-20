@@ -143,21 +143,38 @@ namespace GoogleHascode
 			}
 			#endregion
             long ScoreOpt = (long)max_lib_score;
-            long LibCoutOpt = 1;
+            long LibCoutOpt = libraries.Capacity;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
-            for (int i = 0; i < LibCoutOpt; i++) // Init level 0
-                bag[0, i] = new Cell(0, 0, 0, false);
+            for (int i = 0; i < ScoreOpt; i++) // Init level 0
+                bag[i, 0] = new Cell(0, 0, 0, false);
 
-            // Calculate other rows
+			// Calculate other rows
+			for (int score = 1; score < ScoreOpt; score++)
+			{
+				for (int lib = 0; lib < LibCoutOpt; lib++)
+				{
+					CalculateCell(bag, libraries, score, lib);
+				}
+			}
 
-            // Get Best result
+			//Get Best Result
+			long best_row = 0;
+            for (long i = 0; i <LibCoutOpt; i++)
+			{
+				if (bag[ScoreOpt, i].TotalTime <= number_of_days)
+				{
+					best_row = i;
+					break;
+				}
+			}
 
             //Backtrack and recieve libraries
             //TODO CHANGE BACKTRACK PARAMETERS!!!!!!
-            int X = 5;
-            int Y = 7;
+			//ints should be longs
+            int X = (int)ScoreOpt;
+            int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
          //   used_libraries = BackTrack(bag, X, Y, used_libraries);
 
