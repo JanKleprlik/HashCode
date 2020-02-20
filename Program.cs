@@ -142,7 +142,7 @@ namespace GoogleHascode
 
 			#region Algorithm
 			long ScoreOpt = (long)max_lib_score;
-            long LibCoutOpt = libraries.Capacity;
+            long LibCoutOpt = libraries.Count;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
@@ -162,7 +162,7 @@ namespace GoogleHascode
 			long best_row = 0;
             for (long i = 0; i <LibCoutOpt; i++)
 			{
-				if (bag[ScoreOpt, i].TotalTime <= number_of_days)
+				if (bag[ScoreOpt-1, i].TotalTime <= number_of_days)
 				{
 					best_row = i;
 					break;
