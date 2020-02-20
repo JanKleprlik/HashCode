@@ -25,19 +25,12 @@ namespace GoogleHascode
         public int num_of_used_books;
         public int scann_time;
 		public int scans_per_day;
-		public float score;
-
-        
+		public float score;        
 	}
 
 
 	class Program
 	{
-		public static void GetBestResult()
-		{
-			//for (int i = )
-		}
-
 		public static void PrintOutput(List<Library> chosen_libraries)
 		{
 			using (var sw = new StreamWriter("output.txt"))
@@ -142,7 +135,13 @@ namespace GoogleHascode
 				}
 			}
 			#endregion
-            long ScoreOpt = (long)max_lib_score;
+
+
+
+
+
+			#region Algorithm
+			long ScoreOpt = (long)max_lib_score;
             long LibCoutOpt = libraries.Capacity;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
@@ -176,10 +175,10 @@ namespace GoogleHascode
             int X = (int)ScoreOpt;
             int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-         //   used_libraries = BackTrack(bag, X, Y, used_libraries);
-
-            //for (; ; );
-            FindBestLibraryScore(libraries[0]);
+			//   used_libraries = BackTrack(bag, X, Y, used_libraries);
+			#endregion
+			//for (; ; );
+			FindBestLibraryScore(libraries[0]);
 
             PrintOutput(libraries);
         }
