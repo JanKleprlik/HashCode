@@ -5,23 +5,30 @@ using System.IO;
 
 namespace GoogleHascode
 {
+    class IntComparer : IComparer<int>
+    {
+        int IComparer<int>.Compare(int x, int y)
+        {
+            return -1 * x.CompareTo(y);
+        }
+    }
 
-	class Book :IComparable<Book>
-	{
-		public int id;
-		public int score;
+    class Book : IComparable<Book>
+    {
+        public int id;
+        public int score;
 
-		public int CompareTo(Book other)
-		{
-            return -1*this.score.CompareTo(other.score);
-		}
-	}
+        public int CompareTo(Book other)
+        {
+            return -1 * this.score.CompareTo(other.score);
+        }
+    }
 
-	class Library
-	{
-		public int id;
-		public List<int> books = new List<int>();
-		public int num_of_books;
+    class Library
+    {
+        public int id;
+        public List<int> books = new List<int>();
+        public int num_of_books;
         public int num_of_used_books;
         public int scann_time;
 		public int scans_per_day;
@@ -67,12 +74,12 @@ namespace GoogleHascode
         {
 
 
-			int number_of_books;
-			int number_of_libraries;
-			int number_of_days;
-			float max_lib_score = 0;
-			List<int> books = new List<int>();
-			List<Library> libraries = new List<Library>();
+            int number_of_books;
+            int number_of_libraries;
+            int number_of_days;
+            float max_lib_score = 0;
+            List<int> books = new List<int>();
+            List<Library> libraries = new List<Library>();
 
             #region READING INPUT
             StreamReader sr = new StreamReader("a_example.txt");
@@ -115,16 +122,16 @@ namespace GoogleHascode
                     lib.scans_per_day = int.Parse(nums_s[2]);
 
 
-					if (!(lib.scann_time > number_of_days)) //doba nahrání knihovny je delší jak počet možných dnů
-					{
-						//přidám id knížek do knihovny
-						for (int j = 0; j < lib.num_of_books; j++)
-						{
-							int id = ReadInteger(ref sr);
-							score += books[id];
-							lib.books.Add(id);
-						}
-						lib.score = (score / (float)lib.scann_time);
+                    if (!(lib.scann_time > number_of_days)) //doba nahrání knihovny je delší jak počet možných dnů
+                    {
+                        //přidám id knížek do knihovny
+                        for (int j = 0; j < lib.num_of_books; j++)
+                        {
+                            int id = ReadInteger(ref sr);
+                            score += books[id];
+                            lib.books.Add(id);
+                        }
+                        lib.score = (score / (float)lib.scann_time);
 
 						if (lib.score > max_lib_score)
 						{
@@ -153,14 +160,14 @@ namespace GoogleHascode
             for (int i = 0; i < ScoreOpt; i++) // Init level 0
                 bag[i, 0] = new Cell(0, 0, 0, false);
 
-			// Calculate other rows
-			for (int score = 1; score < ScoreOpt; score++)
-			{
-				for (int lib = 0; lib < LibCoutOpt; lib++)
-				{
-					CalculateCell(bag, libraries, score, lib);
-				}
-			}
+            // Calculate other rows
+            for (int score = 1; score < ScoreOpt; score++)
+            {
+                for (int lib = 0; lib < LibCoutOpt; lib++)
+                {
+                    //CalculateCell(bag, libraries, score, lib);
+                }
+            }
 
 			//Get Best Result
 			long best_row = 0;
@@ -183,7 +190,7 @@ namespace GoogleHascode
 			used_libraries = BackTrack(bag, X, Y, used_libraries, libraries);
 			#endregion
 			//for (; ; );
-			FindBestLibraryScore(libraries[0]);
+			//FindBestLibraryScore(libraries[0]);
 
             PrintOutput(used_libraries);
         }
@@ -198,14 +205,36 @@ namespace GoogleHascode
 			}
 		}
 
+        /*
         static void FindBestLibraryScore (Library lib)
         {
-            lib.books.Sort();
-            int best = 0;
-            
-            for(int i = 0; i < lib.books.Count; i++)
+            List<Book> books_in_lib = new List<Book>();
+            for (int i = 0; i < lib.books.Count; i++)
             {
+                books_in_lib.Add(new Book { id = i, score = books[i] });
             }
+            IntComparer ic = new IntComparer();
+            books_in_lib.Sort();
+            books.Sort(ic);
+
+            int score = 0;
+            foreach (int i in books)
+                score += i;
+
+            float best = score / (float)lib.scann_time;
+            float newscore = 0;
+            int books_removed = 0;
+            int best_books_removed = 0;
+            for (int i = books_in_lib.Count - 1; i >= 0; i--)
+            {
+                score -= books[i];
+                books_removed++;
+                newscore = score / (float)lib.scann_time;
+                if (newscore >= best)
+                {
+                    best = newscore;
+                    books_removed = best_books_removed;
+                }
 
         }
 
