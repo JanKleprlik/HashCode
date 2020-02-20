@@ -75,8 +75,8 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            //StreamReader sr = new StreamReader("a_example.txt");
-            StreamReader sr = new StreamReader("b_read_on.txt");
+            StreamReader sr = new StreamReader("a_example.txt");
+            //StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
@@ -141,7 +141,7 @@ namespace GoogleHascode
 
 
 			#region Algorithm
-			long ScoreOpt = 1000000;
+			long ScoreOpt = Math.Min(1000000, (long)max_lib_score);
 			long maxScore = (long)max_lib_score;
             long LibCoutOpt = libraries.Count;
 
@@ -164,22 +164,23 @@ namespace GoogleHascode
 
 			//Get Best Result
 			long best_row = 0;
-            for (long i = LibCoutOpt-1; i > 0; i--)
+            for (long i = ScoreOpt - 1; i > 0; i--)
 			{
-				if (bag[ScoreOpt-1, i].TotalTime <= number_of_days)
+				if (bag[i, libraries.Count-1].TotalTime <= number_of_days)
 				{
 					best_row = i;
 					break;
 				}
+				//int a = bag[ScoreOpt - 1, i].TotalTime;
 			}
 
             //Backtrack and recieve libraries
             //TODO CHANGE BACKTRACK PARAMETERS!!!!!!
 			//ints should be longs
-            int X = (int)ScoreOpt;
-            int Y = (int)best_row;
+            int Y = (int)libraries.Count - 1;
+            int X = (int)best_row;
             List<Library> used_libraries = new List<Library>();
-			used_libraries = BackTrack(bag, X, Y, used_libraries);
+			used_libraries = BackTrack(bag, X, Y, used_libraries, libraries);
 			#endregion
 			//for (; ; );
 			FindBestLibraryScore(libraries[0]);
@@ -208,15 +209,15 @@ namespace GoogleHascode
 
         }
 
-        static List<Library> BackTrack(Cell[,] bag, int X, int Y, List<Library> used_libraries)
+        static List<Library> BackTrack(Cell[,] bag, int X, int Y, List<Library> used_libraries, List<Library> libraries)
         {
             if (X == 0 || Y == 0)
                 return used_libraries;
 
             if (bag[X,Y].IsLibraryUsed)
-                used_libraries.Add(used_libraries[X]);
+                used_libraries.Add(libraries[Y]);
 
-            return BackTrack(bag, bag[X, Y].PrevCellX, bag[X, Y].PrevCellY, used_libraries);
+            return BackTrack(bag, bag[X, Y].PrevCellX, bag[X, Y].PrevCellY, used_libraries, libraries);
         }
 
         static void CalculateCell(Cell[,] bag, List<Library> libraries, int X, int Y)
