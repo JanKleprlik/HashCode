@@ -169,16 +169,22 @@ namespace GoogleHascode
 				}
 			}
 
+			//Get Best Result
 			long best_row = 0;
             for (long i = 0; i <LibCoutOpt; i++)
 			{
-				//var a = bag[ScoreOpt, i]
+				if (bag[ScoreOpt, i].TotalTime <= number_of_days)
+				{
+					best_row = i;
+					break;
+				}
 			}
 
             //Backtrack and recieve libraries
             //TODO CHANGE BACKTRACK PARAMETERS!!!!!!
-            int X = 5;
-            int Y = 7;
+			//ints should be longs
+            int X = (int)ScoreOpt;
+            int Y = (int)best_row;
             List<Library> used_libraries = new List<Library>();
             used_libraries = BackTrack(bag, X, Y, used_libraries);
 
