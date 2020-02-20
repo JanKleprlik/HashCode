@@ -189,7 +189,7 @@ namespace GoogleHascode
 			used_libraries = BackTrack(bag, X, Y, used_libraries);
 			#endregion
 			//for (; ; );
-			FindBestLibraryScore(libraries[0]);
+			//FindBestLibraryScore(libraries[0]);
 
             PrintOutput(used_libraries);
         }
@@ -204,6 +204,7 @@ namespace GoogleHascode
 			}
 		}
 
+        /*
         static void FindBestLibraryScore (Library lib)
         {
             List<Book> books_in_lib = new List<Book>();
