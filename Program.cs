@@ -43,6 +43,11 @@ namespace GoogleHascode
 
 	class Program
 	{
+		public static void GetBestResult()
+		{
+			for (int i = )
+		}
+
 		public static void PrintOutput(List<Library> chosen_libraries)
 		{
 			using (var sw = new StreamWriter("output.txt"))
@@ -82,6 +87,7 @@ namespace GoogleHascode
 			int number_of_books;
 			int number_of_libraries;
 			int number_of_days;
+			decimal max_lib_score = 0;
 			List<int> books = new List<int>();
 			List<Library> libraries = new List<Library>();
 
@@ -136,6 +142,11 @@ namespace GoogleHascode
 							lib.books.Add(id);
 						}
 						lib.score = (score / (decimal)lib.scann_time);
+
+						if (lib.score > max_lib_score)
+						{
+							max_lib_score = lib.score;
+						}
 					}
 					libraries.Add(lib);
 				}
