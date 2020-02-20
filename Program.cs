@@ -75,8 +75,8 @@ namespace GoogleHascode
 			List<Library> libraries = new List<Library>();
 
             #region READING INPUT
-            StreamReader sr = new StreamReader("a_example.txt");
-            //StreamReader sr = new StreamReader("b_read_on.txt");
+            //StreamReader sr = new StreamReader("a_example.txt");
+            StreamReader sr = new StreamReader("b_read_on.txt");
             //StreamReader sr = new StreamReader("c_incunabula.txt");
             //StreamReader sr = new StreamReader("d_tough_choices.txt");
             //StreamReader sr = new StreamReader("e_so_many_books.txt");
@@ -141,10 +141,14 @@ namespace GoogleHascode
 
 
 			#region Algorithm
-			long ScoreOpt = (long)max_lib_score;
+			long ScoreOpt = 1000000;
+			long maxScore = (long)max_lib_score;
             long LibCoutOpt = libraries.Count;
 
-            Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
+			ScaleScore(libraries, ScoreOpt / maxScore);
+
+
+			Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
             for (int i = 0; i < ScoreOpt; i++) // Init level 0
                 bag[i, 0] = new Cell(0, 0, 0, false);
@@ -183,7 +187,15 @@ namespace GoogleHascode
             PrintOutput(libraries);
         }
 
-        #region Algorithm
+		#region Algorithm
+
+		public static void ScaleScore(List<Library> libraries, long constant)
+		{
+			foreach (var lib in libraries)
+			{
+				lib.score = lib.score * constant;
+			}
+		}
 
         static void FindBestLibraryScore (Library lib)
         {
