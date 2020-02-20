@@ -37,7 +37,7 @@ namespace GoogleHascode
         public int num_of_used_books;
         public int scann_time;
 		public int scans_per_day;
-		public decimal score;
+		public float score;
 	}
 
 
@@ -45,7 +45,7 @@ namespace GoogleHascode
 	{
 		public static void GetBestResult()
 		{
-			for (int i = )
+			//for (int i = )
 		}
 
 		public static void PrintOutput(List<Library> chosen_libraries)
@@ -87,7 +87,7 @@ namespace GoogleHascode
 			int number_of_books;
 			int number_of_libraries;
 			int number_of_days;
-			decimal max_lib_score = 0;
+			float max_lib_score = 0;
 			List<int> books = new List<int>();
 			List<Library> libraries = new List<Library>();
 
@@ -141,7 +141,7 @@ namespace GoogleHascode
 							score += books[id];
 							lib.books.Add(id);
 						}
-						lib.score = (score / (decimal)lib.scann_time);
+						lib.score = (score / (float)lib.scann_time);
 
 						if (lib.score > max_lib_score)
 						{
@@ -151,10 +151,9 @@ namespace GoogleHascode
 					libraries.Add(lib);
 				}
 			}
-            #endregion
-
-            const int ScoreOpt = 1;
-            const int LibCoutOpt = 1;
+			#endregion
+            long ScoreOpt = (long)max_lib_score;
+            long LibCoutOpt = 1;
 
             Cell[,] bag = new Cell[ScoreOpt, LibCoutOpt];
 
